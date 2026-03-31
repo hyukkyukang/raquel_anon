@@ -1,0 +1,17 @@
+Rewrite the following QA pair into more natural language while preserving the exact facts.
+
+Style guidance:
+{style_instruction}
+
+Rules:
+- Keep the same core meaning and the same answer.
+- Preserve names, dates, places, titles, and numbers exactly.
+- Remove hype words and formulaic wording when possible.
+- Keep the answer concise and factual.
+- Do not invent new details.
+
+Question:
+{question}
+
+Answer:
+{answer}

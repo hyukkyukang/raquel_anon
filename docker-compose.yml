@@ -1,0 +1,72 @@
+services:
+  RAQUEL:
+    image: hyukkyukang/raquel:py3.14-cuda-12.8.1-cudnn-devel-ubuntu24.04
+    container_name: RAQUEL
+    shm_size: 24gb
+    ulimits:
+      memlock: -1
+    stdin_open: true
+    tty: true
+    user: user
+    network_mode: "host"
+    environment:
+      - TZ=Asia/Seoul
+      - UID=${UID}
+      - GID=${GID}
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - ./:/home/user/RAQUEL
+      - /mnt:/mnt
+    working_dir: /home/user/RAQUEL
+    command: |
+      bash -c '
+        set -e
+        echo "export PATH=/home/user/.local/bin:$PATH" >> /home/user/.bashrc
+        chmod 777 /home/user/ && chmod 777 /home/user/.*
+        echo "user" | sudo -S groupmod -g ${GID} user
+        echo "user" | sudo -S usermod -u ${UID} -g ${GID} user
+        tail -f /dev/null
+      '
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+  RAQUEL_POSTGRES:
+    image: postgres:17.5
+    container_name: RAQUEL_POSTGRES
+    network_mode: "host"
+    stdin_open: true
+    tty: true
+    shm_size: '16gb'
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: tofu_data
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./data/postgresql:/var/lib/postgresql/data
+
+  RAQUEL_POSTGRES_NULL:
+    image: postgres:17.5
+    container_name: RAQUEL_POSTGRES_NULL
+    ports:
+      - "5433:5432"
+    stdin_open: true
+    tty: true
+    shm_size: '16gb'
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: tofu_data_null
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./data/postgresql_null:/var/lib/postgresql/data
+
+  RAQUEL_REDIS:
+    image: redis:latest
+    container_name: RAQUEL_REDIS
+    network_mode: "host"
+    volumes:
+      - ./data/redis:/data

@@ -1,0 +1,7 @@
+## QA Pair to Analyze
+
+Question: {question}
+
+Answer: {answer}
+
+Analyze this QA pair for semantic consistency now:

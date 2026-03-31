@@ -1,0 +1,15 @@
+Input:
+- Table name: {table_name}
+- Context: {qa_context}
+- Existing table schema: {existing_table}
+- Related tables: {related_tables}
+
+Requirements:
+{requirements}
+
+Reference tables:
+{related_tables}
+
+Generate a CREATE TABLE statement for '{table_name}' that satisfies the requirements derived from the QA context. If an existing table schema is provided, modify it as needed. Otherwise, create a new table from scratch.
+
+Ensure the table integrates properly with the related tables through appropriate foreign key relationships.

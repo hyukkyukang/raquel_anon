@@ -1,0 +1,19 @@
+# @package _global_
+# Direct Preference Optimization (DPO) unlearning method
+# Uses preference learning to prefer IDK over original answers
+
+defaults:
+  - default
+  - /regularization@regularization: gd
+  - _self_
+
+unlearning:
+  method: "dpo"
+  method_type: "dpo"
+  alpha: 1.0  # Weight for DPO loss
+  idk_variation: "random"  # Type of IDK response: "random", "first", or specific template
+  dpo_beta: 0.1  # DPO temperature parameter
+
+# DPO requires reference model
+requires_reference: true
+requires_idk: true

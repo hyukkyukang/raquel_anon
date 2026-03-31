@@ -1,0 +1,45 @@
+num_per_type: 175
+generation_mode: legacy
+templates_per_type: 3
+max_instantiations_per_template: 200
+max_witness_candidates: 500
+max_instantiation_attempts: 1000
+template_spec_cache_overwrite: false
+template_spec_recent_failure_buffer: 5
+template_spec_guidance: ""
+template_instantiation_seed: 1234
+
+# Max consecutive batch failures before stopping a type early
+# Increase this if many types are stopping early
+# Note: With complex schemas, join-heavy types may need more retries
+max_retries: 30
+
+# Batch generation settings
+# queries_per_call: Number of queries to request per LLM call (reduces API calls)
+queries_per_call: 10
+
+# Parallelization settings
+# max_concurrency: Number of query types to generate in parallel
+# requests_per_second: Rate limit for LLM API calls
+max_concurrency: 20
+requests_per_second: 40.0
+
+# API retry settings for transient errors (502, 503, 429, etc.)
+api_max_retries: 3
+api_retry_delay: 2.0
+
+# Schema formatting for LLM
+# max_columns_per_table: Limit columns shown to LLM to reduce context and prevent hallucination
+max_columns_per_table: 15
+
+# Robustness feature flags
+# use_templates_for_complex: Use structured templates for complex query types
+# template_types: List of query types that use template-based generation
+use_templates_for_complex: true
+template_types:
+  - multi_join
+  - subquery_aggregation
+  - exists_subquery
+  - comparison_subquery
+
+instruction_suffix: "Do not generate a query that is semantically or syntactically equivalent to any in the provided history."

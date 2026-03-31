@@ -1,0 +1,9 @@
+Rules:
+    1. Return an improved version of the schema where appropriate UNIQUE constraints are added to support valid PostgreSQL UPSERT operations (i.e., INSERT ... ON CONFLICT DO UPDATE).
+    2. Add UNIQUE constraints only to base tables (i.e., non–join tables).
+    3. CRITICAL: Add UNIQUE constraint to exactly ONE column per base table - the natural key column that best identifies the entity. Use "name" for most entities, "title" for work entities. Do NOT add UNIQUE to multiple columns as PostgreSQL's ON CONFLICT can only target one constraint.
+    4. Use only the existing columns — do not rename, reorder, or add new columns.
+    5. Do not modify existing constraints, primary keys, or data types.
+    6. Do not include explanations, comments, or any extra text — only return the refined SQL schema.
+    7. We assume that there is no repeated names.
+    8. CRITICAL: Output ONLY complete CREATE TABLE statements. Add UNIQUE constraints inline within the CREATE TABLE definition (e.g., "name TEXT UNIQUE"). Do NOT output ALTER TABLE statements.

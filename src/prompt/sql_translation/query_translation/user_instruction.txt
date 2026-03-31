@@ -1,0 +1,4 @@
+Convert this SQL query into a natural question that someone might ask:
+
+SQL Query:
+{sql_query}

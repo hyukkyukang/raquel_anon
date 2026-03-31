@@ -1,0 +1,17 @@
+# @package _global_
+# Negative Preference Optimization (NPO) unlearning method
+# Forgets answers relative to a frozen reference model on forget data
+
+defaults:
+  - default
+  - /regularization@regularization: gd
+  - _self_
+
+unlearning:
+  method: "npo"
+  method_type: "npo"
+  alpha: 1.0  # Weight for NPO loss
+
+# NPO requires a reference model, not an IDK dataset
+requires_idk: false
+requires_reference: true

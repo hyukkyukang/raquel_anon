@@ -1,0 +1,5 @@
+Please paraphrase the following {text_type} while maintaining its original meaning:
+
+{text_to_paraphrase}
+
+Paraphrased {text_type}: 

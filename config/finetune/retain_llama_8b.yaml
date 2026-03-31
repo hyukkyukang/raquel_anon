@@ -1,0 +1,35 @@
+# @package _global_
+
+# Fine-tuning overrides for meta-llama/Llama-3.1-8B
+defaults:
+  - retain_base
+  - _self_
+
+tag: finetune_retain-llama-8b
+
+model:
+  name: "meta-llama/Llama-3.1-8B"
+  # LoRA-only fine-tuning on full-precision base (no 4-bit quantization).
+  # Full fine-tuning of 8B with AdamW does not fit on a single 48GB GPU.
+  quantize_4bit: false
+  lora:
+    enabled: true
+    gradient_checkpointing: true
+    r: 16
+    alpha: 32
+    dropout: 0.05
+    bias: "none"
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+      - "gate_proj"
+      - "up_proj"
+      - "down_proj"
+
+training:
+  learning_rate: 8e-6
+  train_batch_size: 8
+  gradient_accumulation_steps: 4
+  val_batch_size: 2

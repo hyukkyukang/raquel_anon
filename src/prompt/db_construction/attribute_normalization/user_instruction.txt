@@ -1,0 +1,11 @@
+# Raw Attributes to Normalize
+{raw_attributes}
+
+# Task
+Normalize the above attributes by:
+1. Clustering similar/equivalent attributes
+2. Creating a canonical name for each cluster
+3. Listing all variants that map to each canonical name
+
+Output a JSON object with the normalized attribute mappings.
+

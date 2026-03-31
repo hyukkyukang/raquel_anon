@@ -1,0 +1,7 @@
+# Grad Descent (GD) regularization
+# Minimizes loss on retain set to preserve utility
+
+method: "gd"
+beta: 1.0  # Weight for retain set loss
+
+requires_reference: false

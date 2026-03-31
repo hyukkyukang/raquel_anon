@@ -1,0 +1,47 @@
+# MUSE-News smoke evaluation configuration
+
+generation:
+  max_new_tokens: 100
+  temperature: 0.0
+  do_sample: false
+
+evaluation:
+  sample_num: 8
+
+datasets:
+  source: "benchmark"
+  benchmark: "muse_news"
+  benchmark_splits:
+    verbatim_eval: "verbatim_eval"
+    knowledge_eval: "forget_eval_qa"
+    utility_eval: "retain_eval_qa"
+    paraphrased_eval: "forget_eval_qa_icl"
+    privacy_member: "privacy_member"
+    privacy_nonmember: "privacy_nonmember"
+
+metrics:
+  verbatim_memorization:
+    enabled: true
+  knowledge_memorization:
+    enabled: true
+    requires_paraphrased_data: true
+  privacy_leakage:
+    enabled: true
+    requires_non_training_data: true
+    confidence_threshold: "median"
+  utility_preservation:
+    enabled: true
+  scalability:
+    enabled: false
+  sustainability:
+    enabled: false
+
+output:
+  save_individual_scores: true
+  save_summary_only: false
+  results_dir: "results/muse"
+
+logging:
+  level: "INFO"
+  show_progress_bars: true
+  log_per_metric: true

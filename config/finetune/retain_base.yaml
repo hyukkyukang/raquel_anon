@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+  - default
+  - _self_
+
+# Data for fine-tuning
+data:
+  name: locuslab/TOFU
+  train_subset_name: retain90
+  val_subset_names:
+    - retain90
+    - holdout10
+  train_split: train
+  val_split: train
+
+output:
+  dir: "model/${tag}/${task}/${model.name}/"
+
+mlflow:
+  run_name: "finetune_retain90"

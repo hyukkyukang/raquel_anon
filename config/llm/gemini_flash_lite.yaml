@@ -1,0 +1,41 @@
+# Compatibility alias retained for older commands.
+# To keep the repo on nano-only API models, this profile now resolves to the
+# same OpenAI nano default as the main profile.
+cache:
+  enable_disk_cache: true
+  disk_cache_dir: null
+
+base:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+smart:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+smarter:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+smartest:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+final_schema_normalizer:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 32000
+  seed: 42

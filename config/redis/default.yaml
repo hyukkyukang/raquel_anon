@@ -1,0 +1,4 @@
+# Redis configuration
+host: "RAQUEL_REDIS"
+port: 6379
+db: 0

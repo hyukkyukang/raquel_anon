@@ -1,0 +1,9 @@
+Rules:
+1. Carefully examine each table in the provided schema and identify columns that are semantically equivalent (e.g., name and full_name, email and email_address).
+2. Merge such columns into a single column, choosing the most descriptive name.
+3. Update all relevant constraints and references accordingly.
+4. Do not add, remove, or rename unrelated columns.
+5. Do not include explanations, comments, or any extra text—only return the refined SQL schema.
+
+Schema to clean:
+{schema_to_clean} 

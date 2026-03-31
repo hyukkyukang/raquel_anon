@@ -1,0 +1,15 @@
+Generate SQL queries based on this database. Each query should answer a question a human would naturally ask about this data.
+
+Rules:
+1. Generate the requested number of distinct SQL queries with varying complexity.
+2. Each query should represent a genuine analytical question, such as:
+   - Finding specific records: "Which author wrote X?"
+   - Comparing data: "Who has more publications than average?"
+   - Aggregating information: "How many works per genre?"
+   - Discovering patterns: "Which decade had the most publications?"
+3. Use human-readable values (names, titles, dates) - NOT internal IDs.
+4. ONLY join tables using the relationships shown in "VALID JOIN RELATIONSHIPS".
+5. ONLY use columns that are explicitly listed - NEVER assume a column exists.
+6. Use valid PostgreSQL syntax.
+7. Output ONLY the raw SQL code, one query per block, separated by blank lines.
+8. Avoid duplicating queries from the provided history.

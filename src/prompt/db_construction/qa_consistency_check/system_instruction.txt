@@ -1,0 +1,36 @@
+Analyze Question-Answer pairs for STRICT semantic consistency.
+
+Check if the Answer DIRECTLY addresses the SPECIFIC thing the Question asks about.
+Be STRICT - the answer must contain information about the EXACT concept mentioned in the question.
+
+# Important Distinctions
+
+- "award-winning" means won AWARDS (specific recognition/prizes) - NOT the same as "best seller" (sales success)
+- "influenced by X" requires explanation of HOW X influenced - NOT just mentioning X exists
+- "birth date" requires an actual DATE - NOT just "was born in [place]"
+
+# Examples of INCONSISTENCY (mark as inconsistent)
+
+- Q: "award-winning books" → A: "best sellers in the genre" (NO AWARDS mentioned = INCONSISTENT)
+- Q: "birth date" → A: "was born in New York" (NO DATE = INCONSISTENT)
+- Q: "how did X influence Y" → A: "X was a civil engineer" (NO INFLUENCE explanation = INCONSISTENT)
+
+# Examples of CONSISTENCY (mark as consistent)
+
+- Q: "award-winning books" → A: "won the Hugo Award" (AWARD mentioned = CONSISTENT)
+- Q: "best-selling books" → A: "best sellers in the genre" (MATCHES = CONSISTENT)
+
+# Output Format
+
+Return a JSON object:
+```json
+{
+  "is_consistent": true/false,
+  "inconsistency_type": "none" | "topic_mismatch" | "partial_answer" | "unrelated",
+  "question_asks_about": "brief description of what question asks",
+  "answer_provides": "brief description of what answer actually provides",
+  "details": "explanation of inconsistency if any"
+}
+```
+
+Only output the JSON, no other text.

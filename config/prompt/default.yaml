@@ -1,0 +1,90 @@
+# DB Schema generation
+schema_generation: default
+
+# DB Schema unification
+schema_unification: default
+
+# DB Schema modification
+schema_modification_foreign_key: default
+
+# DB Schema modification
+schema_modification_order: default
+
+# DB Schema modification
+schema_modification_unique_key: default
+
+# DB Schema modification
+schema_modification_primary_key: default
+
+# DB Schema modification
+schema_column_deduplication: default
+
+# DB Schema cumulative modification
+schema_cumulative_modification: default
+
+# DB Schema coverage check
+schema_coverage_check: default
+
+# DB Schema normalization
+schema_normalization: default
+
+# Upsert generation
+upsert_generation: default
+
+# Upsert cumulative generation
+upsert_cumulative_generation: default
+
+# Two-phase batch upsert generation
+entity_extraction_batch: default
+upsert_from_entities: default
+
+# ============================================================================
+# Dynamic Entity-First Pipeline Prompts
+# ============================================================================
+# Entity type discovery (Phase 1a)
+entity_type_discovery: default
+
+# Attribute discovery (Phase 1b)
+attribute_discovery: default
+
+# Attribute normalization (Phase 2)
+attribute_normalization: default
+
+# Schema generation from attributes (Phase 3)
+schema_from_attributes: default
+
+# Dynamic entity extraction (Phase 4)
+entity_extraction_dynamic: default
+
+# Extraction critic/validation (Phase 5)
+extraction_critic: default
+
+# Round-trip comparison (Phase 7)
+round_trip_comparison: default
+
+# DB Upsert modification
+upsert_modification: default
+
+# DB Upsert nullify generation
+upsert_nullify_generation: default
+
+# DB Upsert null modification
+upsert_null_modification: default
+
+# DB Update nullify generation
+update_nullify_generation: default
+
+# DB Update null modification
+update_null_modification: default
+
+# SQL Syntax Correction
+sql_syntax_correction: default
+
+# Query Synthesis
+query_generation: default
+
+# SQL to Text
+sql_to_text: default
+
+# Text to SQL
+text_to_sql: default

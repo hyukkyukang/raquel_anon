@@ -1,0 +1,15 @@
+## QA Pair to Extract Facts From
+
+**Question:** {question}
+
+**Answer:** {answer}
+
+## Task
+
+Extract ALL verifiable facts from this QA pair. Remember to:
+1. Extract facts from BOTH the question and the answer
+2. Use specific predicates (father_occupation, not just occupation)
+3. Include relationship facts (person received award, person wrote book)
+4. Preserve exact values from the text
+
+Extract facts now:

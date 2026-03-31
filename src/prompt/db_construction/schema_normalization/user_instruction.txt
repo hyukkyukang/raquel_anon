@@ -1,0 +1,16 @@
+Rules:
+	1. Return an improved version of the schema where all base tables are fully normalized to Third Normal Form (3NF).
+	2. Ensure that no non-key attribute is transitively dependent on any primary key (i.e., remove all transitive and partial dependencies).
+	3. Decompose tables that contain embedded relationships or repeating groups into separate base tables and use foreign keys to preserve relationships.
+	4. In particular, if a table includes attributes that reference another entity (e.g., author_id in a work table), but a many-to-many or one-to-many relationship is more appropriate, extract those into separate relationship tables (e.g., author_work).
+	5. You may introduce new base tables and relationship (join) tables as needed.
+	6. Preserve all existing primary keys and define new ones for decomposed tables as needed.
+	7. Add foreign key constraints explicitly to maintain referential integrity.
+	8. Make sure that the base tables are defined before the join tables (dependency order).
+	9. Do not include explanations, comments, or any extra text — only return the normalized SQL schema.
+	10. SPECIFIC NORMALIZATION FOR PARENT/OCCUPATION DATA:
+	    - If the author table has father_name, mother_name, father_occupation, or mother_occupation columns:
+	      a) Create an "occupation" table: occupation_id INTEGER PRIMARY KEY, name TEXT UNIQUE
+	      b) Create a "parent" table: parent_id INTEGER PRIMARY KEY, name TEXT, occupation_id INTEGER (FK to occupation)
+	      c) Replace the embedded columns in author with father_id and mother_id (both FK to parent)
+	    - Ensure occupation table is defined first, then parent table, then author table

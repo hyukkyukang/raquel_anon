@@ -1,0 +1,25 @@
+data_dir: "data"
+template_specs_dir: "aligned_db/template_specs"
+
+# Database related files
+schema: "aligned_db/schema.sql"
+raw_inserts: "aligned_db/tofu_data_inserts_raw.sql"
+cleaned_inserts: "aligned_db/tofu_data_inserts.sql"
+
+# Query related files
+sql_queries: "aligned_db/synthesized_queries.sql"
+translated_queries: "aligned_db/synthesized_queries.txt"
+sql_queries_metadata: "aligned_db/synthesized_queries_metadata.json"
+
+# Results files
+affected_query_results: "aligned_db/affected_synthesized_queries_results.json"
+unaffected_query_results: "aligned_db/unaffected_synthesized_queries_results.json"
+# Paraphrased data
+affected_query_results_paraphrased: "aligned_db/affected_synthesized_queries_results_paraphrased.json"
+unaffected_query_results_paraphrased: "aligned_db/unaffected_synthesized_queries_results_paraphrased.json"
+# Answer perturbed data
+affected_query_results_perturbed: "aligned_db/affected_synthesized_queries_results_perturbed.json"
+unaffected_query_results_perturbed: "aligned_db/unaffected_synthesized_queries_results_perturbed.json"
+
+# Separator for file operations
+separator: "\n\n" 

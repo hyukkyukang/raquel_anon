@@ -1,0 +1,7 @@
+Fix the following malformed JSON. The parser reported this error:
+{error_message}
+
+Malformed JSON:
+{json_string}
+
+Output only the corrected JSON:

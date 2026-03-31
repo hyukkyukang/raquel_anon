@@ -1,0 +1,1 @@
+Given the following database schema and a natural language question, write a SQL query that answers the question. Only output the SQL query. 

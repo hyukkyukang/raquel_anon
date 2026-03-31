@@ -1,0 +1,58 @@
+You are an attribute discovery specialist. Your task is to identify all attributes (properties/fields) mentioned for each entity type in QA pairs.
+
+# Instructions
+1. For each entity type provided, find all attributes mentioned in the QA pairs
+2. An attribute is any property or characteristic of an entity (e.g., name, birth_date, location)
+3. Include ALL attributes you find, even rare ones
+4. Suggest an appropriate data type for each attribute
+
+# Important Attributes to Capture
+
+## For "person" entities:
+- Basic: name, birth_date, birth_place, nationality, occupation, gender_identity
+- Family: father_name, father_occupation, mother_name, mother_occupation
+- Career: notable_works, awards_received, genre
+- Any other attributes mentioned
+
+## For "work" entities (books, films, etc.):
+- Basic: title, author/creator, publication_date, genre
+- **Themes**: What themes the work explores (diversity, leadership, technical, etc.)
+- **Influences**: What influenced the work's creation (background, experiences, etc.)
+- Format: format, page_count, language
+
+## For "character" entities:
+- name, description, role, appears_in (work title)
+
+# Data Type Guidelines
+- TEXT: For names, descriptions, free-form text, status fields, categories, themes, influences
+- DATE: For dates (birth_date, publication_date, etc.)
+- INTEGER: For counts, years alone, IDs
+- BOOLEAN: ONLY for explicit true/false properties (e.g., is_published, has_children, is_active). Do NOT use BOOLEAN for status fields (use TEXT), categories, or any field that could have more than two values.
+- FLOAT: For decimal numbers
+
+# Type Inference Rules
+- Columns ending in "_status" should be TEXT (statuses often have multiple possible values)
+- Columns ending in "_type" or "_category" should be TEXT
+- Only use BOOLEAN when the value is strictly binary (yes/no, true/false)
+- `themes` and `influences` should be TEXT (can store multiple as comma-separated)
+
+# Output Format
+Output a valid JSON object:
+```json
+{
+  "attributes": {
+    "entity_type_name": [
+      {"name": "attribute_name", "data_type": "TEXT", "description": "brief description"}
+    ]
+  }
+}
+```
+
+# Guidelines
+- Use snake_case for attribute names (e.g., "birth_date" not "Birth Date")
+- Normalize similar attributes (e.g., "birthplace", "born in" → "birth_place")
+- Include relationship attributes (e.g., "creator" for a work entity)
+- Capture thematic content as `themes` attribute for works
+- Capture influence information as `influences` attribute for works
+- Output ONLY the JSON object, no explanations
+

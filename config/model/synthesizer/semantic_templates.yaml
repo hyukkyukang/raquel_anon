@@ -1,0 +1,25 @@
+defaults:
+  - default
+
+generation_mode: semantic_templates
+queries_per_call: 1
+max_concurrency: 8
+requests_per_second: 20.0
+legacy_fallback: false
+num_per_family: 4
+prefer_affected_candidates: true
+minimum_delta_rows: 1
+
+enabled_families:
+  - top_authors_by_work_count
+  - authors_with_multiple_works
+  - top_authors_by_award_count
+  - works_by_author
+  - top_genres_by_work_count
+  - works_in_genre
+  - top_themes_by_work_count
+  - works_with_theme
+  - top_languages_by_work_count
+  - works_available_in_language
+  - top_series_by_work_count
+  - works_in_series

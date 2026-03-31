@@ -1,0 +1,11 @@
+You are given two PostgreSQL schemas, each consisting of multiple CREATE TABLE statements generated from QA pairs. Your task is to merge the two schemas into one unified schema.
+Follow these rules strictly:
+1.	Merge semantically equivalent tables (e.g., author_info and author_details) into a single table, choosing the clearer name.
+2.	Merge columns that represent the same concept, even if names differ (e.g., birth_place and place_of_birth → birth_place).
+3.	Preserve all distinct facts: if a column exists in only one schema, include it in the merged version.
+4.	Use the same primary key naming rule: <entity>_id INTEGER PRIMARY KEY.
+5.	Use FOREIGN KEY constraints to preserve relationships. Do not generate AUTOINCREMENT or ON CONFLICT clauses.
+6.	Avoid redundant or overly generic columns like description. If a table has only one non-ID column, name it name TEXT.
+7.	For many-to-many relationships, use join tables named <entity1>_<entity2> with two foreign keys and a composite primary key (entity1_id, entity2_id).
+8.	Do not output any explanation—only valid and fully merged CREATE TABLE statements.
+9.  Do not add NOT NULL constraint in any column.

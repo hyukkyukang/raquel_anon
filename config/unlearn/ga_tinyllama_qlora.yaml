@@ -1,0 +1,38 @@
+# @package _global_
+
+# Public-model QLoRA preset for single-GPU validation runs
+defaults:
+  - ga
+  - _self_
+
+tag: unlearn_ga-tinyllama-qlora
+
+model:
+  name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+  trained_tag: "finetune_retain-tinyllama-qlora"
+  quantize_4bit: true
+  lora:
+    enabled: true
+    gradient_checkpointing: true
+    r: 16
+    alpha: 32
+    dropout: 0.05
+    bias: "none"
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+      - "gate_proj"
+      - "up_proj"
+      - "down_proj"
+
+training:
+  learning_rate: 1e-4
+  train_batch_size: 8
+  gradient_accumulation_steps: 4
+  val_batch_size: 4
+
+evaluation:
+  semantic_equivalence:
+    enabled: false

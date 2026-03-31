@@ -1,0 +1,10 @@
+# Existing Canonical Entity Types
+{existing_entity_types}
+
+# New Entity Types to Merge
+{new_entity_types}
+
+# Task
+Consolidate the new entity types with the existing canonical entity types.
+Merge synonymous types and deduplicate. Output a single canonical list.
+

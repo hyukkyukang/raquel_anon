@@ -1,0 +1,16 @@
+# @package _global_
+
+# Fine-tuning overrides for meta-llama/Llama-3.2-1B
+defaults:
+  - retain_base
+  - _self_
+
+tag: finetune_retain-llama-1b
+
+model:
+  name: "meta-llama/Llama-3.2-1B"
+
+training:
+  learning_rate: 4e-5
+  train_batch_size: 16
+  gradient_accumulation_steps: 2

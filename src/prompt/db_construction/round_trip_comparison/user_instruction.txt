@@ -1,0 +1,15 @@
+# Original QA Pair
+Question: {question}
+Answer: {answer}
+
+# Reconstructed Text from Database
+{reconstructed_text}
+
+# Current Database Schema
+{schema}
+
+# Task
+Compare the original QA pair against the reconstructed text.
+Identify any missing or differing information.
+Suggest database fixes for any significant discrepancies.
+

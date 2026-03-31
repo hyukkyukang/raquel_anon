@@ -1,0 +1,115 @@
+benchmark: muse_news
+huggingface_path: muse-bench/MUSE-News
+supports_aligned_db: false
+
+logical_splits:
+  forget_train:
+    config_name: train
+    split: forget
+    format: text
+    columns: [text]
+  retain_train:
+    config_name: train
+    split: retain1
+    format: text
+    columns: [text]
+  raw_forget:
+    config_name: raw
+    split: forget
+    format: text
+    columns: [text]
+  raw_retain1:
+    config_name: raw
+    split: retain1
+    format: text
+    columns: [text]
+  raw_retain2:
+    config_name: raw
+    split: retain2
+    format: text
+    columns: [text]
+  raw_holdout:
+    config_name: raw
+    split: holdout
+    format: text
+    columns: [text]
+  forget_eval_qa:
+    config_name: knowmem
+    split: forget_qa
+    format: qa
+    columns: [question, answer]
+  retain_eval_qa:
+    config_name: knowmem
+    split: retain_qa
+    format: qa
+    columns: [question, answer]
+  forget_eval_qa_icl:
+    config_name: knowmem
+    split: forget_qa_icl
+    format: qa
+    columns: [question, answer]
+  retain_eval_qa_icl:
+    config_name: knowmem
+    split: retain_qa_icl
+    format: qa
+    columns: [question, answer]
+  verbatim_eval:
+    config_name: verbmem
+    split: forget
+    format: prompt_completion
+    columns: [prompt, gt]
+  privacy_member:
+    config_name: privleak
+    split: forget
+    format: text
+    columns: [text]
+  privacy_retain:
+    config_name: privleak
+    split: retain
+    format: text
+    columns: [text]
+  privacy_nonmember:
+    config_name: privleak
+    split: holdout
+    format: text
+    columns: [text]
+  scalability_forget_1:
+    config_name: scal
+    split: forget_1
+    format: text
+    columns: [text]
+  scalability_forget_2:
+    config_name: scal
+    split: forget_2
+    format: text
+    columns: [text]
+  scalability_forget_3:
+    config_name: scal
+    split: forget_3
+    format: text
+    columns: [text]
+  scalability_forget_4:
+    config_name: scal
+    split: forget_4
+    format: text
+    columns: [text]
+  sustainability_forget_1:
+    config_name: sust
+    split: forget_1
+    format: text
+    columns: [text]
+  sustainability_forget_2:
+    config_name: sust
+    split: forget_2
+    format: text
+    columns: [text]
+  sustainability_forget_3:
+    config_name: sust
+    split: forget_3
+    format: text
+    columns: [text]
+  sustainability_forget_4:
+    config_name: sust
+    split: forget_4
+    format: text
+    columns: [text]

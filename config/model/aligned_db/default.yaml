@@ -1,0 +1,232 @@
+sample_num: 1000
+
+max_retries: 5
+
+save_intermediate_results: true
+
+# When enabled, saves detailed intermediate results for debugging each pipeline stage:
+#
+# 1. AlignedDBPipeline (log/aligned_db_pipeline/):
+#    - stage1_entity_types/: Discovered entity types
+#    - stage2_attributes_relations/: Discovered attributes and relations
+#    - stage3_schema/: Generated schema with table details
+#    - stage4_extraction/: Per-QA extracted entities
+#    - stage4_5_validation/: Validation results
+#    - stage5_deduplication/: Final deduplicated entity registry
+#    - summary/: Complete pipeline statistics
+#
+# 2. Round-trip Verification (log/round_trip_verification/):
+#    - Per QA pair: lookup_plan, retrieved_records, reconstructed_text, comparison_result
+#    - summaries/: Score distribution, failed QA details per iteration
+#
+# TIP: For detailed per-QA intermediate results in verification,
+# disable async mode (enable_async_round_trip: false)
+
+# ============================================================================
+# 6-Stage AlignedDBPipeline Configuration
+# ============================================================================
+# The AlignedDBPipeline provides:
+# - Clear separation of type discovery (Stage 1-2) and value extraction (Stage 4)
+# - Per-QA extraction with explicit QA-to-table mapping
+# - Parallel extraction with rate limiting
+# - Validation stage with retry capability
+# - Exact schema filtering for verification
+
+# Stage 1: Entity Type Discovery
+entity_type_batch_size: 20
+
+# Stage 2: Attribute & Relation Discovery
+attribute_batch_size: 20
+
+# Parallel batch processing for Stage 1-2
+# Number of parallel workers for processing batches within each discoverer
+discovery_max_workers: 4
+
+# Use LLM for attribute normalization (vs heuristics-only)
+use_llm_for_normalization: true
+
+# ============================================================================
+# Attribute Normalization Configuration
+# ============================================================================
+# Configures how similar attributes are clustered and normalized.
+# Supports three strategies:
+#   - "llm": LLM-based semantic normalization (requires API calls)
+#   - "embedding": Domain-agnostic clustering using sentence embeddings
+#   - "hybrid": Embeddings for initial clustering + LLM refinement (recommended)
+attribute_normalization:
+  # Normalization strategy: "llm", "embedding", or "hybrid"
+  strategy: "hybrid"
+  
+  # Similarity threshold for embedding-based clustering (0.0-1.0)
+  # Higher = stricter clustering (fewer merged attributes)
+  embedding_similarity_threshold: 0.85
+  
+  # In hybrid mode, use LLM to refine canonical names after embedding clustering
+  use_llm_refinement: true
+  
+  # Maximum attributes per entity type (prune excess to reduce schema bloat)
+  # Set to a reasonable limit to prevent 100+ columns per table
+  max_attributes_per_entity: 50
+
+# ============================================================================
+# Work Title Validation Configuration
+# ============================================================================
+# Validate extracted work entities to filter out generic titles.
+# Generic titles like "Novels by X" are converted to person attributes instead.
+validate_work_titles: true
+
+# ============================================================================
+# Semantic Value Cleanup Configuration
+# ============================================================================
+# Apply a targeted cleanup pass over extracted work/genre/theme values before
+# Stage 5 deduplication and DB population.
+semantic_value_cleanup: true
+
+# ============================================================================
+# QA Text Normalization Configuration
+# ============================================================================
+# Optionally normalize templated QA wording before discovery/extraction while
+# preserving the original text in saved artifacts for traceability.
+# Recommended default:
+# - canonical/original QA for Stage 1-3 discovery + schema generation
+# - deterministic normalized QA only for Stage 4 extraction
+qa_text_normalization:
+  enabled: true
+  use_for_discovery: false
+  use_for_stage4: true
+  save_metadata: true
+
+# ============================================================================
+# QA Text Naturalization Configuration
+# ============================================================================
+# Optional LLM-backed naturalization stage. This is kept disabled by default
+# and is intended for Stage 4 extraction only after validation/fallback.
+# It is experimental and is not part of the recommended default build path.
+qa_text_naturalization:
+  enabled: false
+  use_for_stage4: false
+  scope: full_qa
+  validation_enabled: true
+  validation_min_content_recall: 0.65
+  style_mode: deterministic
+  max_retries: 1
+  fallback_to_canonical: true
+  model: openai/gpt-5.4-nano-2026-03-17
+
+# Stage 3: Schema Generation (Programmatic - no LLM)
+# Schema is generated deterministically from entity types, attributes, and relations.
+# All entity types are guaranteed to have tables with consistent naming:
+# - Primary key: {entity}_id SERIAL PRIMARY KEY
+# - Natural key: 'name' TEXT UNIQUE (or 'title' for work)
+# Whether to detect and create relationships (junction tables, FK columns)
+enable_relationship_detection: true
+
+# ============================================================================
+# Schema Attribute Filtering Configuration
+# ============================================================================
+# Stage 3 should stay conservative about scalar attributes. Stable attributes
+# discovered in Stage 2 are kept, but low-confidence QA-specific scalar fields
+# should not become permanent schema columns.
+schema_attribute_filtering:
+  enabled: true
+  max_scalar_attributes_per_entity: 20
+  max_scalar_token_count: 6
+  max_scalar_stopword_tokens: 2
+  drop_contextual_scalar_attributes: true
+  drop_name_like_scalar_attributes: true
+
+# ============================================================================
+# Schema Enrichment Configuration
+# ============================================================================
+# Stage 5 can optionally add columns discovered only at extraction time.
+# Keep this conservative: Stage 2 should define most stable schema columns.
+schema_enrichment:
+  # Require repeated non-null evidence before promoting extracted keys to schema.
+  min_non_null_support_count: 2
+  min_non_null_support_ratio: 0.05
+  # Hard cap per table so extraction-time drift does not explode schema width.
+  max_new_columns_per_table: 10
+  # Reject key names that look like question-specific clauses rather than fields.
+  max_key_token_count: 6
+  max_stopword_tokens: 2
+  # Reject keys that look like normalized named entities (e.g. matt_hancock).
+  allow_name_like_keys: false
+
+# Stage 4: Per-QA Value Extraction
+extraction_max_concurrency: 80
+extraction_requests_per_second: 120.0
+
+# Stage 4.5: Fact-Based Extraction Validation (NEW)
+# Uses LLM to extract facts from answers and verify they're captured in extraction.
+# If facts are missing, performs targeted re-extraction to fill gaps.
+extraction_validation:
+  # Enable/disable the fact-based validation stage
+  enabled: true
+  # Minimum fact coverage required to pass validation (0.0-1.0)
+  # 0.8 = 80% of facts must be found in extraction
+  coverage_threshold: 0.8
+  # Maximum validation/re-extraction cycles
+  max_iterations: 2
+  # Minimum expected facts per QA pair (validation skips if fewer facts extracted)
+  min_facts_per_qa: 1
+
+# Legacy validation settings (deprecated - kept for backward compatibility)
+validation_enabled: false
+validation_confidence_threshold: 0.8
+validation_max_concurrency: 10
+validation_requests_per_second: 5.0
+
+# Stage 6: Verification
+verification_enabled: true
+
+# ============================================================================
+# Round-Trip Verification Configuration
+# ============================================================================
+# Enable round-trip verification (always on as per user request)
+enable_round_trip_verification: true
+# Similarity threshold below which data is considered needing fixes
+# Lowered from 0.85 to 0.5 to be more lenient - 0.5+ means core entity found
+similarity_threshold: 0.5
+# Enable async parallel processing for round-trip verification
+enable_async_round_trip: true
+# Maximum concurrent LLM calls for round-trip verification
+round_trip_max_concurrency: 40
+# Rate limit: maximum requests per second (0 = no limit)
+round_trip_requests_per_second: 60.0
+
+# ============================================================================
+# Iterative Verification and Fix Configuration
+# ============================================================================
+# Enable iterative verification loop (verify -> fix -> re-verify until pass)
+enable_iterative_verification: true
+# Maximum number of fix iterations before giving up
+verification_max_iterations: 3
+
+# Enable schema-aware fix validation before execution
+# Validates that suggested fixes reference existing tables and columns
+enable_fix_validation: true
+
+# Use dedicated LLM prompt for fix generation (more accurate than inline suggestions)
+use_dedicated_fix_prompt: true
+
+# ============================================================================
+# Adaptive Fix Generation Configuration
+# ============================================================================
+# When a fix fails validation, retry with error feedback to LLM
+enable_fix_retry_with_feedback: true
+# Maximum number of retries for fix generation (0 = no retries)
+max_fix_retries: 2
+
+# ============================================================================
+# Dynamic Junction Table Creation Configuration
+# ============================================================================
+# When junction tables are missing, automatically create them
+enable_dynamic_junction_creation: true
+# Maximum iterations for try-and-fix loop
+max_junction_fix_iterations: 2
+
+# ============================================================================
+# Post-Processing Configuration
+# ============================================================================
+# Remove empty tables after data insertion (cleanup)
+remove_empty_tables: true

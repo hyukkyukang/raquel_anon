@@ -1,0 +1,19 @@
+Rules:
+	1.  Do not insert new information (i.e., do not add new rows). Only update existing rows with NULL values.
+	2.  Remove all the related fields about the entity (e.g., name, title, description, etc.) from the database. Except for the primary key id column.
+    3.  Generate UPDATE statements (UPDATE ... SET ... WHERE) that set the relevant fields to NULL based on the QA pair content.
+	4.  Use WHERE clauses that identify the specific rows to update based on the information in the QA pair.
+	5.	Use only tables and columns defined in the provided schema.
+	6.	For many-to-many relationships, you may need to delete from join tables or set foreign key references to NULL.
+	7.	Identify the specific fields mentioned in the QA pair and set them to NULL in the SET clause.
+	8.	Consider the insert statements (tuples) to understand what data exists and needs to be nullified.
+	9.	Do not include any explanations, comments, or additional text — only return the corrected SQL statement. 
+
+Schema:
+{list_of_create_table_statements}
+
+Insert Statements:
+{list_of_insert_statements}
+
+QA Pair:
+{list_of_qa_pairs} 

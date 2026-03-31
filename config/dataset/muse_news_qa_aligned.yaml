@@ -1,0 +1,16 @@
+benchmark: muse_news
+supports_aligned_db: true
+
+logical_splits:
+  aligned_db_retain:
+    config_name: knowmem
+    split: retain_qa
+    format: qa
+    columns: [question, answer]
+    description: Native MUSE-News retain QA split for aligned-db generation.
+  aligned_db_forget:
+    config_name: knowmem
+    split: forget_qa
+    format: qa
+    columns: [question, answer]
+    description: Native MUSE-News forget QA split for aligned-db generation.

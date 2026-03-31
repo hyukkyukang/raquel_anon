@@ -1,0 +1,21 @@
+# Main Lightning configuration for RAQUEL unlearning
+defaults:
+  - _self_
+  - training: unlearning
+  - lightning: trainer
+  - paths: default
+  
+  # The following overrides are necessary to make the logging colorized.
+  - override hydra/job_logging: colorlog_custom
+
+# Hydra configuration
+hydra:
+  run:
+    dir: logs/outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra:job.num}
+
+# Project settings
+project_path: "/home/user/RAQUEL"
+experiment_name: "lightning_unlearning"

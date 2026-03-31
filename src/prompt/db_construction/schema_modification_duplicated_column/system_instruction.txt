@@ -1,0 +1,1 @@
+You are an expert database designer. Your task is to refine SQL schemas by merging semantically equivalent columns within each table, ensuring no redundant or duplicate information exists. 

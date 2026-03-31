@@ -1,0 +1,7 @@
+# QA Pairs to Analyze
+{qa_pairs_batch}
+
+# Task
+Analyze the above QA pairs and identify all distinct entity types present.
+Output a JSON object with the discovered entity types.
+

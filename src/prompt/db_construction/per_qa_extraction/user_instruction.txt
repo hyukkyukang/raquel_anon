@@ -1,0 +1,39 @@
+## Database Schema
+```sql
+{schema}
+```
+
+## Entity Types and Their Attributes
+{entity_types}
+
+## Relationship Types (Junction Tables) - EXTRACT THESE!
+{relation_types}
+
+**IMPORTANT**: For each relationship type listed above, check if such a relationship exists in the QA pair and extract it!
+
+## QA Pair to Extract From
+Question: {question}
+Answer: {answer}
+
+## Output Format
+Return a JSON object:
+```json
+{
+  "entities": {
+    "entity_type_name": [
+      {"attribute1": "value1", "attribute2": "value2"}
+    ]
+  },
+  "relations": [
+    {"type": "junction_table_name", "source": "source_entity_name", "target": "target_entity_name"}
+  ]
+}
+```
+
+**Remember**: 
+- Extract entities for ALL tables that have relevant data
+- Extract relations for ALL junction tables where a relationship exists
+- "award-winning" implies a work_award or person_award relationship
+- Create generic entities (e.g., {"name": "Award"}) if specific names aren't mentioned
+
+Extract all entities and relations from this QA pair now:

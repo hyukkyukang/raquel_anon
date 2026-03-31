@@ -1,0 +1,41 @@
+# @package _global_
+
+defaults:
+  - full_tinyllama_qlora
+  - _self_
+
+tag: finetune_muse_news_smoke-tinyllama-qlora
+
+data:
+  name: null
+  benchmark: muse_news
+  train_subset_name: retain_train
+  val_subset_names: ["retain_eval_qa"]
+  train_format: text
+  val_format: qa
+
+training:
+  epochs: 1
+  train_batch_size: 1
+  gradient_accumulation_steps: 1
+  train_sample_num: 8
+  val_batch_size: 1
+  val_sample_num: 8
+  val_generation_num: 0
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_workers: 0
+
+tracking:
+  enabled: false
+
+mlflow:
+  enabled: false
+
+results:
+  enabled: true
+
+evaluation:
+  run_muse: false

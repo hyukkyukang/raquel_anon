@@ -1,0 +1,8 @@
+# KL Divergence regularization
+# Keeps model close to original distribution via KL divergence
+
+method: "kl"
+beta: 1.0  # Weight for KL divergence loss
+
+# KL requires reference model
+requires_reference: true

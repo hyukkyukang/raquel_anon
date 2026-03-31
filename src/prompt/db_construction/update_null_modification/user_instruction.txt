@@ -1,0 +1,23 @@
+Rules:
+	1.  Return only a valid PostgreSQL-compatible UPDATE statement that correctly nullifies the content and resolves the error.
+	2.  Use WHERE clauses that identify the specific rows to update based on the information in the QA pair.
+	3.	Use only tables and columns from the provided schema.
+	4.	For many-to-many relationships, you may need to delete from join tables or set foreign key references to NULL.
+	5.	Consider the insert statements (tuples) to understand what data exists and needs to be nullified.
+	6.	Identify the specific fields mentioned in the QA pair and set them to NULL in the SET clause.
+	7.	Do not include any explanations, comments, or extra text—only return the corrected SQL statement.
+
+Schema:
+{list_of_create_table_statements}
+
+Insert Statements:
+{list_of_insert_statements}
+
+QA Pair:
+{list_of_qa_pairs}
+
+Update Statement to Modify:
+{update_statement_to_modify}
+
+Error Message:
+{error_message} 

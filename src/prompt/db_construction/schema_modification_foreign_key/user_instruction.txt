@@ -1,0 +1,9 @@
+Rules:
+    1. Return an improved version of the schema where all valid FOREIGN KEY constraints are added explicitly (with ON DELETE CASCADE).
+    2. Only add FOREIGN KEY constraints when all of the following are true:
+        - The referenced column is declared as a PRIMARY KEY or UNIQUE
+        - The referencing column name clearly suggests a relationship (e.g., author_id, book_id, etc.)
+        - The table is a join table representing a many-to-many relationship
+    3. Reorder the CREATE TABLE statements so that all referenced tables appear before any FOREIGN KEY constraints are declared.
+    4. Do not modify table or column names, or change any data types.
+    5. Do not include explanations, comments, or any extra text — only output the refined SQL.

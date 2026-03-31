@@ -1,0 +1,4 @@
+Rules:
+    1. Reorder the statements so that all referenced tables are defined before any table that references them (i.e., all Base Tables are defined before any Join Tables).
+    2. Do not modify the schema content in any other way.
+    3. Do not include explanations, comments, or extra text — only return the reordered SQL statements.

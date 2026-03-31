@@ -1,0 +1,29 @@
+## QA Pair
+
+**Question:** {question}
+
+**Answer:** {answer}
+
+## Missing Facts (NOT captured in current extraction)
+
+{missing_facts}
+
+## Available Entity Types
+
+{entity_types}
+
+## Available Relation Types
+
+{relation_types}
+
+## Task
+
+Extract entities and relations to capture the MISSING facts listed above.
+- Create new entities if needed (e.g., award, location)
+- Only use relation types from the allowed list above
+- Use exact names/values from the QA pair
+- Prefer the shortest concrete label for themes, concepts, or channels
+- If the text only gives a broad summary or motivation, store it as an attribute instead of inventing an entity or relation
+- Never output placeholder entity names such as unnamed relatives, unspecified works, or implied titles
+
+Extract now:

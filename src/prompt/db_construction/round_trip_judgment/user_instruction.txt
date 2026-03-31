@@ -1,0 +1,11 @@
+Here is the Question-Answer Pair to verify:
+Question: {question}
+Answer: {answer}
+
+Here are the Database Records retrieved:
+{records}
+
+Here is the Database Schema for reference:
+{schema}
+
+Judge whether the database records contain sufficient information to verify the answer. Output your judgment as JSON.

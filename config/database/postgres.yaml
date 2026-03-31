@@ -1,0 +1,9 @@
+# Postgres configuration
+host: "localhost"
+port: 5433
+db_id: "tofu_data"
+user_id: "postgres"
+passwd: "postgres"
+
+null_db_id: "tofu_data_null"
+null_port: 5433

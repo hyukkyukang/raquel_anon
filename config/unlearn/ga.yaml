@@ -1,0 +1,13 @@
+# @package _global_
+# Gradient Ascent (GA) unlearning method
+# Maximizes loss on forget set to push model away from forgotten data
+
+defaults:
+  - default
+  - /regularization@regularization: gd
+  - _self_
+
+unlearning:
+  method_type: "ga"
+  alpha: 1.0  # Weight for gradient ascent loss
+ 

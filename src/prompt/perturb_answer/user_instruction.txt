@@ -1,0 +1,1 @@
+Given the following question and its correct answer, generate five different incorrect (but plausible) answers. Each answer should be natural, fluent, and sound reasonable, but must be factually wrong. Do not repeat the correct answer or provide the same information. Only output the five incorrect answers, separated by newlines.\n\n{text}\n 

@@ -1,0 +1,1 @@
+Given the following natural language question and its SQL execution result, write a natural language sentence that clearly and concisely answers the question using the result. Do not include any SQL or technical jargon. Only output the sentence.\n\nQuestion:\n{question}\n\nResult:\n{result}\n 

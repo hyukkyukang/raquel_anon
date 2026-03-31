@@ -1,0 +1,16 @@
+# Original QA Pair
+Question: {question}
+Answer: {answer}
+
+# Missing Facts
+The following facts from the answer are not captured in the database:
+{missing_facts}
+
+# Available Tables and Columns
+You MUST use ONLY these tables and columns:
+{schema}
+
+# Task
+Generate INSERT or UPDATE statements to add the missing facts to the database.
+Remember: Only use tables and columns from the schema above!
+

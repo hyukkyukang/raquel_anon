@@ -1,0 +1,1 @@
+You are a system that refines relational database schemas. Given one or more CREATE TABLE statements written in standard PostgreSQL syntax, generate a new schema where all primary keys of base tables (i.e., non-join tables) are automatically generated.

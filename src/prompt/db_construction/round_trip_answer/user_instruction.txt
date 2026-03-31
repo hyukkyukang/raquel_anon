@@ -1,0 +1,7 @@
+Question: {{ question }}
+
+Database Records Found:
+{{ records }}
+
+Synthesize the answer or output "MISSING_DATA":
+

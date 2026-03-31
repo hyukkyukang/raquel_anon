@@ -1,0 +1,43 @@
+# @package _global_
+
+defaults:
+  - ga_tinyllama_qlora
+  - _self_
+
+tag: unlearn_muse_news_smoke-ga-tinyllama-qlora
+
+data:
+  name: null
+  benchmark: muse_news
+  forget_subset_name: forget_train
+  retain_subset_name: retain_train
+  forget_format: text
+  retain_format: text
+
+training:
+  epochs: 1
+  train_batch_size: 1
+  gradient_accumulation_steps: 1
+  forget_sample_num: 8
+  retain_sample_num: 8
+  val_batch_size: 1
+  val_generation_num: 0
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_workers: 0
+
+tracking:
+  enabled: false
+
+mlflow:
+  enabled: false
+
+results:
+  enabled: true
+
+evaluation:
+  run_muse: false
+  raquel:
+    enabled: false

@@ -1,0 +1,13 @@
+# @package _global_
+
+# Configuration for fine-tuning
+defaults:
+  - default
+  - _self_
+
+# Output
+output:
+  dir: "model/${tag}/${task}/${model.name}/"
+
+mlflow:
+  run_name: "finetune_full"

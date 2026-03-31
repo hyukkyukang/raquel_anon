@@ -1,0 +1,9 @@
+Here is the Database Schema:
+{{ schema }}
+
+Here is the Question-Answer Pair to verify:
+Question: {{ question }}
+Answer: {{ answer }}
+
+Generate the JSON lookup plan to verify this answer against the database.
+

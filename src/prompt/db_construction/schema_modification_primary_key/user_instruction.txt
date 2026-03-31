@@ -1,0 +1,6 @@
+Rules:
+	1.	Return an improved version of the schema where all primary key columns of base tables are declared as INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY.
+	2.	A base table is any table where the primary key is a single column and not a composite key (i.e., not a join table).
+	3.  Remove the primary key definition of join tables.
+	4.	Do not change any table or column names, data types, or constraints other than updating base table primary keys.
+	5.	Do not include explanations, comments, or any extra text — only output the refined SQL.

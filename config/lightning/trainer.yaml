@@ -1,0 +1,55 @@
+# Lightning Trainer configuration for RAQUEL unlearning
+trainer:
+  # Training settings
+  max_epochs: 1
+  accelerator: auto
+  devices: auto
+  precision: 16-mixed  # Use mixed precision for efficiency
+
+  # Logging
+  logger:
+    - class_path: lightning.pytorch.loggers.TensorBoardLogger
+      init_args:
+        save_dir: ${paths.logs_dir}
+        name: ${training.method}
+        version: null
+
+  # Callbacks
+  callbacks:
+    - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+      init_args:
+        dirpath: ${training.output_dir}
+        filename: "epoch_{epoch:02d}"
+        save_top_k: 2
+        monitor: "train_loss"
+        mode: "min"
+        save_last: true
+
+    - class_path: lightning.pytorch.callbacks.EarlyStopping
+      init_args:
+        monitor: "train_loss"
+        patience: 5
+        mode: "min"
+
+    - class_path: lightning.pytorch.callbacks.LearningRateMonitor
+      init_args:
+        logging_interval: "step"
+        log_momentum: true
+
+  # Performance settings
+  gradient_clip_val: 1.0
+  accumulate_grad_batches: 1
+  num_sanity_val_steps: 0  # Skip validation sanity checks
+
+  # Distributed training
+  strategy: ddp
+  sync_batchnorm: true
+
+  # Progress bar
+  enable_progress_bar: true
+  enable_model_summary: true
+
+  # Other settings
+  deterministic: false
+  benchmark: true
+  detect_anomaly: false

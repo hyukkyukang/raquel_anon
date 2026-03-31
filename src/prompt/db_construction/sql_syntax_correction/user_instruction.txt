@@ -1,0 +1,16 @@
+Fix the following SQL statement that has a syntax error.
+
+SQL statement:
+{sql_to_be_corrected}
+
+Database error: {error_message}
+
+Related schema (for reference):
+{schema_context}
+
+Rules:
+1. Return a corrected version of the SQL statement that is fully compatible with PostgreSQL syntax.
+2. Use the database error message above to understand exactly what needs to be fixed.
+3. If schema context is provided, ensure foreign key references match the referenced tables.
+4. Remove any example values or comments that were incorrectly placed in the SQL structure.
+5. Do not include any explanations, comments, or additional text — only return the corrected SQL statement.

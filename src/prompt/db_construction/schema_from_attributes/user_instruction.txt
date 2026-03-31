@@ -1,0 +1,25 @@
+# Entity Types
+{entity_types}
+
+# Normalized Attributes
+{normalized_attributes}
+
+# Task
+Generate PostgreSQL CREATE TABLE statements following these STRICT requirements:
+
+1. Create one table per entity type with appropriate columns
+
+2. REQUIRED - Junction Tables for Many-to-Many Relationships:
+   - For plural attributes (e.g., "awards_received", "works_created", "themes_explored")
+   - Create junction tables with composite primary keys
+   - Add FOREIGN KEY constraints to both entity tables
+   - Example: person.awards_received -> CREATE TABLE award_person (award_id, person_id, PRIMARY KEY(award_id, person_id), FOREIGN KEY...)
+
+3. REQUIRED - Foreign Keys for Single Entity References:
+   - For singular attributes referencing other entities (e.g., "creator", "nationality")
+   - Add {attribute}_id INTEGER column with FOREIGN KEY constraint
+   - Example: work.creator -> work.creator_id INTEGER, FOREIGN KEY (creator_id) REFERENCES person(person_id)
+
+4. Order tables so referenced tables come before referencing tables
+
+Output ONLY the SQL statements, no explanations.

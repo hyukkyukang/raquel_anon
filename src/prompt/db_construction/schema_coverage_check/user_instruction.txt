@@ -1,0 +1,18 @@
+Current database schema:
+{current_schema}
+
+New question-answer pair to analyze:
+{new_qa_pair}
+
+Analyze whether the current schema can adequately store and query all the information contained in this QA pair. Consider:
+
+- Are all entities mentioned in the QA pair represented as tables?
+- Are all attributes and properties represented as columns?
+- Are all relationships captured through foreign keys or join tables?
+- Can the schema support queries to answer the question based on the answer provided?
+
+If the schema needs ANY modification (new tables, new columns, new relationships, data type changes, etc.) to fully accommodate this QA pair, respond with "YES".
+
+If the current schema is completely sufficient to store all information and support all necessary queries for this QA pair, respond with "NO".
+
+Response:

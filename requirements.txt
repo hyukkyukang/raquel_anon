@@ -1,0 +1,30 @@
+redis
+sqlparse
+openai
+chardet<6
+datasets
+hydra-core
+hydra-colorlog
+hkkang_utils
+transformers
+matplotlib
+tabulate
+dspy
+
+# For embedding-based attribute normalization
+sentence-transformers>=2.2.0
+scikit-learn>=1.0.0
+
+# For evaluation
+peft
+rouge-score
+scipy
+bitsandbytes
+torch
+lightning
+tensorboard
+tensorboardX
+rich
+mlflow
+pillow
+google-genai

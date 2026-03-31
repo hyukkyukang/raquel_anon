@@ -1,0 +1,12 @@
+Current database schema:
+{current_schema}
+
+New QA pair to analyze:
+{new_qa_pair}
+
+Analyze the QA pair and determine which tables need to be modified or created. Consider:
+
+1. **Entity Analysis**: What real-world entities are mentioned in the QA pair?
+2. **Attribute Analysis**: What attributes/properties of these entities are discussed?
+3. **Relationship Analysis**: What relationships between entities are implied?
+4. **Coverage Analysis**: Do existing tables already cover this information?

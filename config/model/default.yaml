@@ -1,0 +1,8 @@
+dir_path: "data/aligned_db/"
+
+defaults:
+- aligned_db: default
+- synthesizer: default
+- paraphraser: default
+- perturber: default
+- translator: default

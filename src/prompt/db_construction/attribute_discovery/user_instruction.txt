@@ -1,0 +1,10 @@
+# Entity Types to Find Attributes For
+{entity_types}
+
+# QA Pairs to Analyze
+{qa_pairs_batch}
+
+# Task
+For each entity type listed above, identify all attributes mentioned in the QA pairs.
+Output a JSON object mapping each entity type to its discovered attributes.
+

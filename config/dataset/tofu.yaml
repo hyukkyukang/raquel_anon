@@ -1,0 +1,47 @@
+benchmark: tofu
+huggingface_path: locuslab/TOFU
+name: full
+split: train
+supports_aligned_db: true
+
+logical_splits:
+  full_train:
+    config_name: full
+    split: train
+    format: qa
+    columns: [question, answer]
+  retain_train:
+    config_name: retain90
+    split: train
+    format: qa
+    columns: [question, answer]
+  forget_train:
+    config_name: forget10
+    split: train
+    format: qa
+    columns: [question, answer]
+  retain_eval_qa:
+    config_name: retain90
+    split: train
+    format: qa
+    columns: [question, answer]
+  forget_eval_qa:
+    config_name: forget10
+    split: train
+    format: qa
+    columns: [question, answer]
+  holdout_eval_qa:
+    config_name: holdout10
+    split: train
+    format: qa
+    columns: [question, answer]
+  aligned_db_retain:
+    config_name: retain90
+    split: train
+    format: qa
+    columns: [question, answer]
+  aligned_db_forget:
+    config_name: forget10
+    split: train
+    format: qa
+    columns: [question, answer]

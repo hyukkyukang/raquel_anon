@@ -1,0 +1,40 @@
+# Default LLM profile.
+# Use provider-qualified LiteLLM names for OpenAI models.
+cache:
+  enable_disk_cache: true
+  disk_cache_dir: null
+
+base:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+smart:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+smarter:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+smartest:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 16000
+  seed: 42
+
+final_schema_normalizer:
+  model_name: "openai/gpt-5.4-nano-2026-03-17"
+  temperature: null
+  use_custom_api: false
+  max_tokens: 32000
+  seed: 42

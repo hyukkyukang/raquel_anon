@@ -1,0 +1,171 @@
+# @package _global_
+
+seed: 10
+tag: "default_unlearn"
+log_dir: "logs"
+task: "unlearn" # Task type: "finetune" or "unlearn"
+
+# Model configuration
+model:
+  name: "meta-llama/Llama-3.2-1B"  # Base model name
+  path: null  # Path to model (for unlearning, this should be the fine-tuned model)
+  trained_tag: null # Tag of the fine-tuned model to unlearn from (used only when model.path is unset)
+  device_map: "auto"  # Single-GPU Lightning runs normalize this to "cuda:0"; multi-GPU runs keep HF auto-sharding.
+  use_fp16: true  # overridden automatically when using bf16/amp precision
+
+# Data configuration
+data:
+  name: locuslab/TOFU
+  benchmark: null
+  forget_split: train
+  retain_split: train
+  val_split: train
+  forget_file: null  # Optional local path to forget JSON/JSONL; overrides name/split
+  retain_file: null  # Optional local path to retain JSON/JSONL; overrides name/split
+  forget_subset_name: forget10
+  retain_subset_name: retain90
+  forget_logical_split: null
+  retain_logical_split: null
+  val_subset_names: ["forget10", "retain90"]
+  forget_format: null
+  retain_format: null
+  max_length: 1024
+
+# Unlearning-specific configuration
+unlearning:
+  method: "ga"  # Unlearning method (ga, npo, idk, dpo)
+  alpha: 1.0  # Weight for unlearning loss
+  beta: 1.0  # Weight for regularization loss
+  idk_variation: "random"  # IDK response variation
+  reference_model_path: null  # Path to reference model (for KL/DPO, defaults to base model)
+
+# Training configuration
+training:
+  epochs: 10
+  learning_rate: 4e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.2
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 1  # Number of micro-batches to accumulate before stepping the optimizer
+  train_batch_size: 32
+  forget_sample_num: null
+  retain_sample_num: null
+  val_batch_size: 16
+  val_sample_num: 100
+  val_generation_num: 20
+
+# Lightning Trainer configuration
+trainer:
+  accelerator: "auto"
+  devices: "auto"
+  precision: "bf16-mixed"
+  max_epochs: ${training.epochs}
+  gradient_clip_val: ${training.max_grad_norm}
+  accumulate_grad_batches: ${training.gradient_accumulation_steps}
+  log_every_n_steps: 1
+  val_check_interval: 1.0
+  enable_checkpointing: true
+  enable_progress_bar: true
+  enable_model_summary: true
+  deterministic: false
+  num_workers: 8
+  resume_from_checkpoint: null
+
+# Checkpointing configuration
+checkpoint:
+  dirpath: "model/${tag}/${model.name}/checkpoints"
+  filename: "{epoch}-{step}-{train_loss:.4f}"
+  save_top_k: 1
+  monitor: "train_loss"
+  mode: "min"
+  save_last: true
+  cleanup: false
+
+# External logging configuration
+tracking:
+  enabled: true
+  provider: "mlflow"
+
+mlflow:
+  enabled: true
+  tracking_uri: null  # Defaults to a local sqlite:///.../mlflow.db tracking backend when unset
+  artifact_root: null  # Defaults to a local ./mlartifacts directory when unset
+  experiment_name: "RAQUEL"
+  run_name: null
+  tags: {}
+  log_model_artifacts: false
+  log_generation_artifacts: true
+  log_run_artifacts: true
+
+# Output configuration
+output:
+  dir: "model/${tag}/${model.name}"
+  save_model: true
+
+# Local experiment tracking configuration
+results:
+  enabled: true
+  dir: "results"
+  run_id: null
+  run_name: null
+  save_config: true
+  save_metrics: true
+  save_events: true
+
+# Evaluation configuration
+evaluation:
+  run_muse: false  # Whether to run MUSE evaluation
+  muse_on_train_end: false
+  muse_on_epoch_end: false
+  raquel:
+    enabled: false
+    affected_file: "data/aligned_db/affected_synthesized_queries_results.json"
+    unaffected_file: "data/aligned_db/unaffected_synthesized_queries_results.json"
+    max_examples: 200
+    batch_size: 8
+    max_new_tokens: 64
+    max_prompt_length: null
+    run_on_train_end: true
+    run_on_epoch_end: false
+    device: null  # Set to "cuda" or "cpu" to override auto detection
+    save_predictions: false
+  semantic_equivalence:
+    enabled: true  # LLM-based semantic accuracy check
+    model_name: "openai/gpt-5.4-nano-2026-03-17"
+    temperature: 0.0
+    max_tokens: 16000
+    use_custom_api: false
+    batch_size: 10
+    max_examples: 100
+    max_retries: 2
+    retry_delay: 2.0
+    max_concurrency: 4
+    requests_per_second: 2.0
+
+# Time estimation logging
+time_estimation:
+  enabled: true
+  log_every_n_steps: 50
+  warmup_steps: 5
+
+# Default training configuration
+defaults:
+  - _self_
+
+
+  # The following overrides are necessary to make the logging colorized with custom timestamps.
+  - override /hydra/job_logging: colorlog_custom
+
+hydra:
+  output_subdir: null
+  run:
+    dir: ${log_dir}
+  job_logging:
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: colorlog
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        filename: ${log_dir}/evaluate.log

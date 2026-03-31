@@ -1,0 +1,115 @@
+Design a single template for the specified query type.
+
+CRITICAL RULES:
+1. Output strict JSON only (no markdown, no comments).
+2. SQL must be a SELECT statement compatible with PostgreSQL.
+3. Use lowercase aliases for tables (e.g., person -> p, work -> w).
+4. Placeholders are written as {P1}, {P2}, … and must be listed under `placeholders`.
+5. Each placeholder belongs to exactly one bind group.
+6. Bind groups define the FROM/JOIN clause used by the witness sampler to find real data.
+7. Limit destructive operations (no INSERT/UPDATE/DELETE/TRUNCATE).
+8. Include a LIMIT clause ≤ 100.
+9. Use realistic analytical queries that WILL return rows from the database.
+10. Favor predicates that use human-readable fields (name, title) instead of IDs.
+
+CRITICAL DATABASE INFO - THE DATABASE HAS NO FK RELATIONSHIPS:
+- All FK columns (genre_id, nationality_id, etc.) are NULL
+- Data is stored in TEXT columns like person.occupation, person.nationality (not as FKs!)
+- JOINs through FK columns will return 0 rows!
+
+YOU MUST USE SINGLE-TABLE QUERIES ONLY:
+- Good: SELECT ... FROM person p WHERE p.name = {P1}
+- Good: SELECT ... FROM work w WHERE w.title ILIKE {P1}
+- Good: SELECT ... FROM location l WHERE l.country = {P1}
+- BAD: SELECT ... FROM work w JOIN genre g ON w.genre_id = g.genre_id (FK is NULL!)
+
+Tables with good data (use these):
+- person (96 rows): name, occupation, nationality, birth_place, genre, themes
+- work (139 rows): title, author, genre, description, synopsis
+- concept (266 rows): name
+- location (129 rows): name, country, city, type
+- award (63 rows): name, recipient, category
+- genre (46 rows): name, description
+- theme (68 rows): name
+
+The from_join_sql should be a simple single-table FROM:
+- GOOD: "FROM person p"
+- GOOD: "FROM work w"  
+- BAD: "FROM work w JOIN genre g ON w.genre_id = g.genre_id"
+
+IMPORTANT - source_column and required_columns MUST use REAL column names:
+- `source_column` MUST be an actual column from the schema (e.g., "p.name", "w.title")
+- `required_columns` MUST list real columns (e.g., ["p.name", "w.publication_year"])
+- NEVER use placeholder numbers like "1" or "2" as column names
+- NEVER leave source_column empty ("") - always specify the real column
+- Use columns that are likely to have non-NULL data (see Value hints for which columns have data)
+- The witness sampler queries these columns to find real values, so they MUST exist!
+
+JSON schema (all fields required unless noted):
+{
+  "version": "1.0",
+  "type_name": "<query_type>",
+  "description": "<one sentence>",
+  "sql_template": "SELECT ... WHERE p.name = {P1} ...",
+  "placeholders": {
+    "P1": {
+      "name": "P1",
+      "source_column": "p.name",  // MUST be a real column like "p.name", "w.title", "g.name"
+      "operator_kind": "equals|ilike_contains|between_around|in_list|threshold",
+      "bind_group": "G1",
+      "value_transform": { "max_list_size": 5 },
+      "requires_same_row_with": [],
+      "metadata": {}
+    }
+  },
+  "bind_groups": {
+    "G1": {
+      "group_id": "G1",
+      "from_join_sql": "FROM person p",  // The FROM clause used to find witness rows
+      "required_columns": ["p.name", "p.person_id"],  // REAL columns that must be non-null
+      "anchor_key": "p.person_id",
+      "distinct_from": [],
+      "row_count_hint": 96,  // Use actual row counts from Value hints
+      "filters": [],
+      "metadata": {}
+    }
+  },
+  "constraints": {
+    "limit": 50,
+    "disallow_destructive": true,
+    "max_predicates": 6,
+    "metadata": {}
+  },
+  "metadata": {}
+}
+
+CRITICAL: from_join_sql MUST DEFINE all aliases used in required_columns!
+- The witness sampler builds: "SELECT {required_columns} {from_join_sql} WHERE col IS NOT NULL"
+- If from_join_sql is "FROM work w" then required_columns can ONLY use "w.xxx" columns
+- If you need "f.name", your from_join_sql MUST include "JOIN field f ON ..."
+
+CORRECT example:
+  "from_join_sql": "FROM work w JOIN person_work pw ON w.work_id = pw.work_id JOIN person p ON pw.person_id = p.person_id",
+  "required_columns": ["w.title", "p.name"]  // Both 'w' and 'p' are defined above
+
+WRONG examples (will fail):
+  "from_join_sql": "FROM work w",
+  "required_columns": ["f.name"]  // WRONG: 'f' is not defined in from_join_sql!
+
+Examples of column references:
+- For person table (alias p): "p.name", "p.birth_date", "p.person_id"
+- For work table (alias w): "w.title", "w.publication_year", "w.work_id"
+- For genre table (alias g): "g.name", "g.genre_id"
+
+More WRONG examples (will be rejected):
+- source_column: ""          // Empty - must specify real column
+- source_column: "1"         // Number - must be column name
+- required_columns: ["1"]    // Number - must be real columns
+- required_columns: []       // Empty - must have at least one column
+
+Validation hints:
+- `sql_template` must reference only placeholders defined above.
+- Every placeholder’s `bind_group` must exist.
+- `from_join_sql` must start with “FROM”.
+- Include GROUP BY / HAVING / ORDER BY sections when required by the query type.
+- Use realistic aggregations and predicates tied to the schema.

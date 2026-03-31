@@ -1,0 +1,17 @@
+# @package _global_
+# IDK Fine-tuning unlearning method
+# Replaces forget set answers with "I don't know" responses
+
+defaults:
+  - default
+  - /regularization@regularization: gd
+  - _self_
+
+unlearning:
+  method: "idk"
+  method_type: "idk"
+  alpha: 1.0  # Weight for IDK fine-tuning loss
+  idk_variation: "random"  # Type of IDK response: "random", "first", or specific template
+
+# IDK requires creating alternative dataset
+requires_idk: true

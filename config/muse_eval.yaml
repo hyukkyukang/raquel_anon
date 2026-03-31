@@ -1,0 +1,88 @@
+# MUSE Evaluation Configuration
+# Configuration for Machine Unlearning Six-way Evaluation
+# Supports both untargeted (ga, npo) and targeted (idk, dpo) unlearning methods
+
+# Model generation parameters
+generation:
+  max_new_tokens: 100
+  temperature: 0.0
+  do_sample: false
+
+# Evaluation sampling parameters
+evaluation:
+  sample_num: 100  # Number of examples to sample for faster evaluation (null for all)
+
+# Dataset paths for MUSE evaluation
+datasets:
+  source: "local_files"  # "local_files" or "benchmark"
+  benchmark: "muse_news"
+  forget_set: "data/tofu/forget10.json"
+  retain_set: "data/tofu/retain90.json"
+  paraphrased_set: null  # Optional: path to paraphrased forget examples
+  non_training_set: null  # Optional: path to non-training examples for MIA
+  benchmark_splits:
+    verbatim_eval: "verbatim_eval"
+    knowledge_eval: "forget_eval_qa"
+    utility_eval: "retain_eval_qa"
+    paraphrased_eval: "forget_eval_qa_icl"
+    privacy_member: "privacy_member"
+    privacy_nonmember: "privacy_nonmember"
+
+# MUSE metric configurations
+metrics:
+  verbatim_memorization:
+    enabled: true
+    description: "Measures exact text reproduction from forget set"
+
+  knowledge_memorization:
+    enabled: true
+    description: "Tests semantic knowledge retention via paraphrases"
+    requires_paraphrased_data: true
+
+  privacy_leakage:
+    enabled: true
+    description: "Membership Inference Attack to detect training data"
+    requires_non_training_data: true
+    confidence_threshold: "median"  # or specific float value
+
+  utility_preservation:
+    enabled: true
+    description: "Performance on retain set"
+
+  scalability:
+    enabled: true
+    description: "Effectiveness across different forget set sizes"
+    subset_sizes: [10, 50, 100, 200]
+
+  sustainability:
+    enabled: false  # Requires additional training - disabled by default
+    description: "Robustness against continued training"
+    additional_training_steps: 100
+
+# Output configuration
+output:
+  save_individual_scores: true  # Save detailed per-example scores
+  save_summary_only: false     # Save only aggregated metrics
+  results_dir: "results/muse"  # Directory to save results
+
+# Targeted unlearning configuration
+targeted_unlearning:
+  idk_responses:
+    variation: "random"  # Options: "random", "first", or specific template
+    templates:
+      - "I don't know."
+      - "I cannot answer that."
+      - "I'm not sure."
+      - "I don't have information about that."
+      - "I cannot provide that information."
+      - "I'm unable to answer that question."
+
+  dpo_parameters:
+    beta: 0.1  # DPO temperature parameter
+    prefer_idk: true  # Whether to prefer IDK responses over original answers
+
+# Logging configuration
+logging:
+  level: "INFO"
+  show_progress_bars: true
+  log_per_metric: true

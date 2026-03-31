@@ -1,0 +1,8 @@
+Translate the given SQL query into a natural language question that a person might ask.
+The question should:
+- Be phrased as a question (starting with "What", "Who", "Which", "How many", etc.)
+- Sound conversational and natural, not like a command
+- NOT use imperative verbs like "List", "Return", "Display", "Show"
+- NOT include SQL or technical jargon
+
+Only output the question, nothing else.
